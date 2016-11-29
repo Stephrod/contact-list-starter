@@ -38,7 +38,8 @@ class App extends Component {
           occupation: 'FBI agent',
           avatar: 'https://pbs.twimg.com/profile_images/718881904834056192/WnMTb__R.jpg'
         }
-      ]
+      ],
+      searchText:''
     };
   }
 
@@ -64,7 +65,7 @@ class App extends Component {
     return (
       <div className="App">
         <SearchBar value={this.state.searchText} onChange={this.handleSearchBarChange.bind(this)}/>
-        <ContactList contacts={this.getFilteredContacts} />
+        <ContactList contacts={this.getFilteredContacts()} />
       </div>
     );
   }

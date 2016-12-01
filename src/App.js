@@ -1,49 +1,31 @@
 import React, { Component } from 'react';
 import ContactList from './ContactList';
 import SearchBar from './SearchBar';
+import NewContactForm from './NewContactForm';
+import axios from 'axios'
 
 class App extends Component {
   constructor() {
     super();
 
     this.state = {
-      contacts: [
-        {
-          _id: 'dale',
-          name: 'Dale Cooper',
-          occupation: 'FBI Agent',
-          avatar: 'https://upload.wikimedia.org/wikipedia/en/5/50/Agentdalecooper.jpg'
-        },
-        {
-          _id: 'spike',
-          name: 'Spike Speigel',
-          occupation: 'Bounty Hunter',
-          avatar: 'http://vignette4.wikia.nocookie.net/deadliestfiction/images/d/de/Spike_Spiegel_by_aleztron.jpg/revision/latest?cb=20130920231337'
-        },
-        {
-          _id: 'wirt',
-          name: 'Wirt',
-          occupation: 'adventurer',
-          avatar: 'http://66.media.tumblr.com/5ea59634756e3d7c162da2ef80655a39/tumblr_nvasf1WvQ61ufbniio1_400.jpg'
-        },
-        {
-          _id: 'michael',
-          name: 'Michael Myers',
-          occupation: 'Loving little brother',
-          avatar: 'http://vignette2.wikia.nocookie.net/villains/images/e/e3/MMH.jpg/revision/latest?cb=20150810215746'
-        },
-        {
-          _id: 'dana',
-          name: 'Dana Scully',
-          occupation: 'FBI agent',
-          avatar: 'https://pbs.twimg.com/profile_images/718881904834056192/WnMTb__R.jpg'
-        }
-      ],
+      contacts: [],
       searchText:''
     };
   }
 
-  handleSearchBarChange(event) {
+  componentDidMount() {
+    axios.get('localhost:3001/api/contacts')
+    .then(res => {
+      this.SetState({
+        searchText: this.state.searchText,
+        contacts: resp.data
+      })
+    })
+    .catch(err => console.log(`Error! ${err}`));
+  }
+
+  handleChange(event) {
     this.setState({
       contacts: this.state.contacts,
       searchText: event.target.value
@@ -61,10 +43,24 @@ class App extends Component {
       });
   }
 
+  handleAddContact(attributes) {
+    axios.post('http://localhost:3001/api/contacts', attributes)
+      .then(resp => {
+        this.setState(prev => {
+          return {
+            ...prev,
+            constacts: [...prev.contacts, resp.data]
+          };
+        });
+      })
+      .catch(err => console.log(err));
+  }
+
   render() {
     return (
       <div className="App">
-        <SearchBar value={this.state.searchText} onChange={this.handleSearchBarChange.bind(this)}/>
+        <NewContactForm onAdd={this.handleAddContact.bind(this)}/>
+        <SearchBar value={this.state.searchText} onChange={this.handleChange.bind(this)}/>
         <ContactList contacts={this.getFilteredContacts()} />
       </div>
     );

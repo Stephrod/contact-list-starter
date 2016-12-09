@@ -57,7 +57,7 @@ handleSubmit(event) {
   }
 }
 
-NewContactForm.propTypes = {
+NewContact.propTypes = {
   onAdd: React.PropTypes.func.isRequired
 };
 

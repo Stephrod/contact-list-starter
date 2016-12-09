@@ -15,14 +15,14 @@ class App extends Component {
   }
 
   componentDidMount() {
-    axios.get('localhost:3001/api/contacts')
-    .then(res => {
-      this.SetState({
-        searchText: this.state.searchText,
-        contacts: resp.data
+    axios.get('https://limitless-bayou-36199.herokuapp.com/api/contacts')
+      .then(resp => {
+        this.setState({
+          searchText: this.state.searchText,
+          contacts: resp.data
+        })
       })
-    })
-    .catch(err => console.log(`Error! ${err}`));
+      .catch(err => console.log(`Error! ${err}`));
   }
 
   handleChange(event) {

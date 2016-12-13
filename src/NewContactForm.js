@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 
-class NewContact extends Component {
+class NewContactForm extends Component {
   constructor() {
     super();
+
     this.state = {
       name: '',
       avatar: '',
@@ -31,7 +32,8 @@ handleSubmit(event) {
         <input
           type="text"
           name="name"
-          value={this.handleInputChange.bind(this)}
+          value={this.state.name}
+          onChange={this.handleInputChange.bind(this)}
         />
         <label htmlFor="name">Occupation:</label>
         <input
@@ -57,8 +59,8 @@ handleSubmit(event) {
   }
 }
 
-NewContact.propTypes = {
+NewContactForm.propTypes = {
   onAdd: React.PropTypes.func.isRequired
 };
 
-export default NewContact;
+export default NewContactForm;

@@ -14,10 +14,11 @@ class App extends Component {
     };
   }
 
-  componentDidMount() {
+  componentWillMount() {
     axios.get('https://limitless-bayou-36199.herokuapp.com/api/contacts')
       .then(resp => {
         this.setState({
+          ...this.state,
           searchText: this.state.searchText,
           contacts: resp.data
         })
@@ -45,15 +46,15 @@ class App extends Component {
 
   handleAddContact(attributes) {
     axios.post('http://localhost:3001/api/contacts', attributes)
-      .then(resp => {
-        this.setState(prev => {
-          return {
-            ...prev,
-            constacts: [...prev.contacts, resp.data]
-          };
-        });
-      })
-      .catch(err => console.log(err));
+    .then(resp => {
+      this.setState(prev => {
+        return {
+          ...prev,
+          contacts: [...prev.contacts, resp.data]
+        };
+      });
+    })
+    .catch(err => console.log(err));
   }
 
   render() {

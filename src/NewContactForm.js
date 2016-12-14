@@ -8,7 +8,7 @@ class NewContactForm extends Component {
       name: '',
       avatar: '',
       occupation: ''
-    };
+    }
   }
   handleInputChange (event) {
     const { value, name: attribute } = event.target;

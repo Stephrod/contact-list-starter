@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
 import ContactList from './ContactList';
+import React, { Component } from 'react';
 import SearchBar from './SearchBar';
 import NewContactForm from './NewContactForm';
 import axios from 'axios'
@@ -9,16 +9,16 @@ class App extends Component {
     super();
 
     this.state = {
-      contacts: [],
-      searchText:''
+      searchText:'',
+      contacts: []
     };
   }
 
-  componentWillMount() {
-    axios.get('https://limitless-bayou-36199.herokuapp.com/api/contacts')
+  componentDidMount() {
+    axios.get('http://localhost:3001/api/contacts')
       .then(resp => {
         this.setState({
-          ...this.state,
+          // ...this.state,
           searchText: this.state.searchText,
           contacts: resp.data
         })
@@ -40,7 +40,8 @@ class App extends Component {
         return contacts;
       }
       return contacts.filter(contact => {
-        return contact.name.toLowerCase().search(term) >= 0;
+        return contact.name.toLowerCase().search(term) >= 0 ||
+        contact.occupation.toLowerCase().search(term) >= 0;
       });
   }
 
@@ -57,12 +58,31 @@ class App extends Component {
     .catch(err => console.log(err));
   }
 
+  handleDeleteContact(id) {
+    console.log('delete', id);
+    axios.delete(`http://localhost:3001/api/contacts/${id}`)
+    .then(resp => {
+      console.log('deleted');
+
+      const contacts = this.state.contacts.filter(contact => {
+        return contact._id !== id;
+    });
+    this.setState(prev => {
+      return {
+        ...prev,
+        contacts: contacts
+      };
+    });
+  })
+    .catch(err => console.log(err));
+}
+
   render() {
     return (
       <div className="App">
         <NewContactForm onAdd={this.handleAddContact.bind(this)}/>
         <SearchBar value={this.state.searchText} onChange={this.handleChange.bind(this)}/>
-        <ContactList contacts={this.getFilteredContacts()} />
+        <ContactList onDelete={this.handleDeleteContact.bind(this)} contacts={this.getFilteredContacts()} />
       </div>
     );
   }

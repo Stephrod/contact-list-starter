@@ -12,6 +12,7 @@ const ContactList = (props) => {
             name={contact.name}
             avatar={contact.avatar}
             occupation={contact.occupation}
+            onDelete={props.onDelete}
           />
         )
       })}
